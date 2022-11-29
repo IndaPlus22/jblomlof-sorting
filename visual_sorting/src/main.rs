@@ -11,7 +11,7 @@ mod sorters_vec;
 //eg. the values range from 0..vec.len()
 //so it produces a smooth line.
 const GRID_WIDTH: usize = 100;
-const GRID_HEIGHT: usize = 100;
+const GRID_HEIGHT: usize = GRID_WIDTH;
 const GRID_CELL_SIZE: usize = 8;
 
 /// Size of the application window.
