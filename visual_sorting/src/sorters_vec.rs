@@ -58,18 +58,26 @@ pub fn selection_sort(_list: &mut Vec<isize>) -> Vec<Vec<isize>> {
     return_vec
 }
 
-pub fn merge_sort(_list: &mut Vec<isize>) ->Vec<Vec<isize>> {
+pub fn merge_sort (_list: &mut Vec<isize>) -> Vec<Vec<isize>> {
+    //need to add starting list to the return so doing this here otherwise its not good.
+    let mut return_vec: Vec<Vec<isize>> = vec![];
+    return_vec.push(_list.to_vec());
+    return_vec.extend(merge_sort_l(_list));
+    return_vec
+}
+
+fn merge_sort_l(_list: &mut Vec<isize>) ->Vec<Vec<isize>> {
     let mut return_vec: Vec<Vec<isize>> = vec![];
     
     if _list.len() != 1 {
         let n = _list.len() / 2;
         let mut second_half = _list.split_off(n);
-        let result = merge_sort(_list);
+        let result = merge_sort_l(_list);
         for mut i in result{
             i.extend(second_half.as_slice());
             return_vec.push(i.to_vec());
         }
-        let result2 = merge_sort(&mut second_half);
+        let result2 = merge_sort_l(&mut second_half);
         for i in result2{
             let mut temp_vec : Vec<isize> = vec![];
             temp_vec.extend(_list.as_slice());

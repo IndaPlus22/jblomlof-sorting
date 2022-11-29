@@ -159,6 +159,8 @@ impl EventHandler for VisualSorter {
     }
 }
 
+
+//the 4 tests below are moslty to see so that all the steps are correctly
 #[test]
 fn insert_sort_test() {
     let unsorted_insert: Vec<isize> = vec![5,2,1,6,1];
@@ -187,7 +189,8 @@ fn merge_sort_test() {
     let solution_insert: Vec<Vec<isize>> = sorters_vec::merge_sort(&mut sorted_insert);
     assert_eq!(unsorted_insert.len(), sorted_insert.len());
     assert_eq!(sorted_insert, vec![1,1,2,5,6]);
-    assert_eq!(solution_insert, vec![vec![2,5,1,6,1], vec![2,5,1,1,6], vec![2,5,1,1,6], vec![1,1,2,5,6]]);
+    assert_eq!(solution_insert, vec![vec![5,2,1,6,1], vec![2,5,1,6,1], vec![2,5,1,1,6], vec![2,5,1,1,6], vec![1,1,2,5,6]]);
+
 }
 
 #[test]
@@ -199,3 +202,58 @@ fn yeet_sort_test() {
     assert_eq!(sorted_insert, vec![1,1,2,5,6]);
     assert_eq!(solution_insert, vec![vec![5,2,1,6,1], vec![2,1,6,1,5], vec![1,6,1,5,2], vec![1,1,5,2,6], vec![1,1,2,6,5], vec![1,1,2,5,6]]);
 }
+
+#[test]
+fn test_all_sorts() {
+    //im testing to see if there are less elements in the sorted vector.
+    //also testing the sum of the unsorted one and the sorted, why?
+    //well ideally i would compare so there are the exact number in each vec, just sorted diff.
+    //but i cant be bothered so i go for sum insted, isnt as good, but better than nothing. 
+    let unsorted : Vec<isize> = vec![82,35,-1,2,5,1,4,2,4,76,2,8,6,4,12,5,7,46,2,456,-111,124,24,35,-111];
+
+    //insert_sort
+    let mut insert_s = unsorted.to_vec();
+    assert_eq!(insert_s, unsorted);
+    sorters_vec::insert_sort(&mut insert_s);
+    assert_eq!(insert_s.len(), unsorted.len());
+    let sum1 : isize = insert_s.iter().sum(); // I need to this otherwise it cries because it doesnt understand what type to make it.
+    let sum2 : isize = unsorted.iter().sum();
+    assert_eq!(sum1, sum2);
+
+    //selection
+    let mut selection_s = unsorted.to_vec();
+    assert_eq!(selection_s, unsorted);
+    sorters_vec::selection_sort(&mut selection_s);
+    assert_eq!(selection_s.len(), unsorted.len());
+    let sum1 : isize = selection_s.iter().sum();
+    let sum2 : isize = unsorted.iter().sum();
+    assert_eq!(sum1, sum2);
+
+    //merge
+    let mut merge_s = unsorted.to_vec();
+    assert_eq!(merge_s, unsorted);
+    sorters_vec::merge_sort(&mut merge_s);
+    assert_eq!(merge_s.len(), unsorted.len());
+    let sum1 : isize = merge_s.iter().sum();
+    let sum2 : isize = unsorted.iter().sum();
+    assert_eq!(sum1, sum2);
+
+    //yeet
+    let mut yeet_s = unsorted.to_vec();
+    assert_eq!(yeet_s, unsorted);
+    sorters_vec::yeet_sort(&mut yeet_s);
+    assert_eq!(yeet_s.len(), unsorted.len());
+    let sum1 : isize = yeet_s.iter().sum();
+    let sum2 : isize = unsorted.iter().sum();
+    assert_eq!(sum1, sum2);
+
+    //last to check if they are all equal
+    assert_eq!(insert_s, selection_s);
+    assert_eq!(insert_s, merge_s);
+    assert_eq!(insert_s, yeet_s);
+    assert_eq!(selection_s, merge_s);
+    assert_eq!(selection_s, yeet_s);
+    assert_eq!(merge_s, yeet_s);
+}
+    
+    
