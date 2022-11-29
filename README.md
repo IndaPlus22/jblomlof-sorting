@@ -15,7 +15,7 @@ All sorting algorithms changes the orginal Vec\<isize\>, and returns a nested Ve
  ### selection_sort
  Typical selection sort.
  ### merge_sort
- Typical selection sort.
+ Typical merge sort.
  ### yeet_sort
 So it's really bad, but fun. It continously loops from start to end. If element[i] > element[i + 1], throw element[i] to the back. E.g if an element, a,  is greater than the next element put the element a at the back. It's very slow and could possible be faster if you throw in some reversing, you'll see.  
 In reality it's just a bad selection_sort. 
