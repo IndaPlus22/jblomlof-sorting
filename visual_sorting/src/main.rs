@@ -1,7 +1,7 @@
 // The standard template taken from the git repo ggez : https://github.com/ggez/ggez
 use ggez::event::{self, EventHandler};
 use ggez::graphics::{self, Color};
-use ggez::{Context, ContextBuilder, GameResult};
+use ggez::{Context, GameResult};
 use rand::prelude::SliceRandom;
 use rand::thread_rng;
 mod sorters_vec;
@@ -12,7 +12,7 @@ mod sorters_vec;
 //so it produces a smooth line.
 const GRID_WIDTH: usize = 100;
 const GRID_HEIGHT: usize = 100;
-const GRID_CELL_SIZE: usize = 5;
+const GRID_CELL_SIZE: usize = 8;
 
 /// Size of the application window.
 const SCREEN_SIZE: (f32, f32) = (
@@ -46,37 +46,27 @@ struct VisualSorter {
     // Your state here...
     sorting: [bool; 4],
     sort_step: usize,
-
-    unsorted: [Vec<isize>; 4],
-
-    solution: [Vec<Vec<isize>>; 4],
-
-    sorted: [Vec<isize>; 4],
+    solution: [Vec<Vec<isize>>; 4]
 }
 
 impl VisualSorter {
     pub fn new(_ctx: &mut Context) -> VisualSorter {
         // Load/create resources such as images here.
-        let a1 = Self::generate_random_grid();
-        let a2 = Self::generate_random_grid();
-        let a3 = Self::generate_random_grid();
-        let a4 = Self::generate_random_grid();
-        let mut sort1 = a1.to_vec();
-        let solution1 = sorters_vec::insert_sort(&mut sort1);
-        let mut sort2 = a2.to_vec();
-        let solution2 = sorters_vec::selection_sort(&mut sort2);
-        let mut sort3 = a3.to_vec();
-        let solution3 = sorters_vec::merge_sort(&mut sort3);
-        let mut sort4 = a4.to_vec();
-        let solution4 = sorters_vec::yeet_sort(&mut sort4);
+        let mut a1 = Self::generate_random_grid();
+        let mut a2 = Self::generate_random_grid();
+        let mut a3 = Self::generate_random_grid();
+        let mut a4 = Self::generate_random_grid();
+       
+        let solution1 = sorters_vec::insert_sort(&mut a1);
+        let solution2 = sorters_vec::selection_sort(&mut a2);
+        let solution3 = sorters_vec::merge_sort(&mut a3);
+        let solution4 = sorters_vec::yeet_sort(&mut a4);
 
         VisualSorter {
             // ...
             sorting: [true, false, false, false],
             sort_step: 0,
-            unsorted: [a1, a2, a3, a4],
-            solution: [solution1, solution2, solution3, solution4],
-            sorted: [sort1, sort2, sort3, sort4],
+            solution: [solution1, solution2, solution3, solution4]
         }
     }
 
@@ -167,4 +157,45 @@ impl EventHandler for VisualSorter {
         }
         Ok(())
     }
+}
+
+#[test]
+fn insert_sort_test() {
+    let unsorted_insert: Vec<isize> = vec![5,2,1,6,1];
+    let mut sorted_insert: Vec<isize> = vec![5,2,1,6,1];
+    let solution_insert: Vec<Vec<isize>> = sorters_vec::insert_sort(&mut sorted_insert);
+    assert_eq!(unsorted_insert.len(), sorted_insert.len());
+    assert_eq!(sorted_insert, vec![1,1,2,5,6]);
+    assert_eq!(solution_insert, vec![vec![5,2,1,6,1], vec![2,5,1,6,1], vec![1,2,5,6,1], vec![1,1,2,5,6]]);
+}
+
+#[test]
+fn selection_sort_test() {
+    let unsorted_insert: Vec<isize> = vec![5,2,1,6,1];
+    let mut sorted_insert: Vec<isize> = vec![5,2,1,6,1];
+    let solution_insert: Vec<Vec<isize>> = sorters_vec::selection_sort(&mut sorted_insert);
+    assert_eq!(unsorted_insert.len(), sorted_insert.len());
+    assert_eq!(sorted_insert, vec![1,1,2,5,6]);
+    assert_eq!(solution_insert, vec![vec![5,2,1,6,1], vec![1,2,5,6,1], vec![1,1,5,6,2], vec![1,1,2,6,5], vec![1,1,2,5,6]]);
+}
+
+
+#[test]
+fn merge_sort_test() {
+    let unsorted_insert: Vec<isize> = vec![5,2,1,6,1];
+    let mut sorted_insert: Vec<isize> = vec![5,2,1,6,1];
+    let solution_insert: Vec<Vec<isize>> = sorters_vec::merge_sort(&mut sorted_insert);
+    assert_eq!(unsorted_insert.len(), sorted_insert.len());
+    assert_eq!(sorted_insert, vec![1,1,2,5,6]);
+    assert_eq!(solution_insert, vec![vec![2,5,1,6,1], vec![2,5,1,1,6], vec![2,5,1,1,6], vec![1,1,2,5,6]]);
+}
+
+#[test]
+fn yeet_sort_test() {
+    let unsorted_insert: Vec<isize> = vec![5,2,1,6,1];
+    let mut sorted_insert: Vec<isize> = vec![5,2,1,6,1];
+    let solution_insert: Vec<Vec<isize>> = sorters_vec::yeet_sort(&mut sorted_insert);
+    assert_eq!(unsorted_insert.len(), sorted_insert.len());
+    assert_eq!(sorted_insert, vec![1,1,2,5,6]);
+    assert_eq!(solution_insert, vec![vec![5,2,1,6,1], vec![2,1,6,1,5], vec![1,6,1,5,2], vec![1,1,5,2,6], vec![1,1,2,6,5], vec![1,1,2,5,6]]);
 }
